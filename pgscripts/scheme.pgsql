@@ -15,6 +15,7 @@ CREATE TABLE funcionario (
 CREATE TABLE cliente (
   telefone varchar(20) PRIMARY KEY,
   aniversario date NOT NULL,
+  nome varchar(200) NOT NULL,
   rua varchar (200) NOT NULL,
   bairro varchar(100) NOT NULL,
   complemento varchar(500)
@@ -26,7 +27,7 @@ CREATE TABLE atendente (
   senha char(16)
   );
 
-CREATE TABLE prato(
+CREATE TABLE prato (
   valor DECIMAL(5,2) NOT NULL,
   nome varchar(200) NOT NULL,
   codigo serial PRIMARY KEY
@@ -37,7 +38,7 @@ CREATE TABLE motoqueiro(
   cnh  char(9) PRIMARY KEY
   );
 
-CREATE TABLE telefone(
+CREATE TABLE telefone (
   numero varchar(20) PRIMARY KEY,
   fcpf varchar(11) REFERENCES funcionario(cpf) NOT NULL
   );
