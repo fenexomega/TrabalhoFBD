@@ -1,6 +1,7 @@
 CREATE USER user_restaurante WITH PASSWORD 'delivery';
 CREATE USER admin_restaurante WITH PASSWORD 'root';
 
+# TODO fazer o usuário delivery ter permissão de inserção e seleção
 CREATE DATABASE deliverydb OWNER admin_restaurante;
 
 # conectar ao banco
@@ -28,9 +29,9 @@ CREATE TABLE atendente (
   );
 
 CREATE TABLE prato (
-  valor DECIMAL(5,2) NOT NULL,
+  codigo serial PRIMARY KEY,
   nome varchar(200) NOT NULL,
-  codigo serial PRIMARY KEY
+  valor DECIMAL(5,2) NOT NULL
   );
 
 CREATE TABLE motoqueiro(
@@ -50,4 +51,10 @@ CREATE TABLE pedido (
   atendente_login varchar(20) REFERENCES atendente(login) NOT NULL,
   entregue_por char(9) REFERENCES motoqueiro(cnh) NOT NULL,
   data_entrega TIMESTAMP
+  );
+
+CREATE TABLE item_pedido (
+  pedido_id serial REFERENCES pedido(id) PRIMARY KEY,
+  prato_codigo REFERENCES prato(codigo) PRIMARY KEY,
+  qtd integer
   );
