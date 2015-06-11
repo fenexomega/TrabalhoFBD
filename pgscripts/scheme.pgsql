@@ -50,7 +50,7 @@ CREATE TABLE pedido (
   telefone_cliente varchar(20) REFERENCES cliente(telefone) NOT NULL,
   atendente_login varchar(20) REFERENCES atendente(login) NOT NULL,
   entregue_por char(9) REFERENCES motoqueiro(cnh) NOT NULL,
-  valor_total decimal(10,2)
+  valor_total decimal(10,2) DEFAULT 0.0
   );
 
 CREATE TABLE item_pedido (
