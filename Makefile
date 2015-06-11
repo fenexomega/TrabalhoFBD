@@ -1,7 +1,7 @@
 USER=postgres
 # SE TIVER SENHA, DESCOMENTE A PRÓXIMA LINHA
 #HAS_PASSWORD=-W
-#NO_DEBUG=--quiet
+NO_DEBUG=--quiet
 
 all:
 	@psql -U $(USER) $(HAS_PASSWORD) $(NO_DEBUG) < pgscripts/scheme.pgsql

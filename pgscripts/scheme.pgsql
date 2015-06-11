@@ -56,5 +56,6 @@ CREATE TABLE pedido (
 CREATE TABLE item_pedido (
   pedido_id serial REFERENCES pedido(id) ,
   prato_codigo serial REFERENCES prato(codigo) ,
-  qtd integer
+  qtd integer,
+  PRIMARY KEY (pedido_id,prato_codigo)
   );

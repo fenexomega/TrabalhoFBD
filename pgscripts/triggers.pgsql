@@ -19,3 +19,23 @@ CREATE TRIGGER update_valor_total
 AFTER INSERT ON item_pedido
 FOR EACH ROW
 EXECUTE PROCEDURE calcular_valor_gasto();
+
+CREATE OR REPLACE FUNCTION pegar_items_do_pedido(pd_id int) RETURNS TABLE (cod int, nome varchar(200), qtd int, valor decimal(10,2))
+AS $$
+BEGIN
+RETURN QUERY EXECUTE
+'SELECT pt.codigo,pt.nome,it.qtd, pt.valor*it.qtd
+FROM prato pt, item_pedido it
+WHERE it.pedido_id = ' || pd_id || '  AND pt.codigo = it.prato_codigo  ';
+END;
+$$ LANGUAGE plpgsql;
+
+/*TODO OS PRODUTOS MAIS PEDIDOS DO CLIENTE*/
+
+CREATE OR REPLACE FUNCTION atualizar_item_pedido(pd_id int, pt_cdg int , new_qtd int) RETURNS VOID
+AS $$
+BEGIN
+UPDATE item_pedido SET qtd = new_qtd WHERE pedido_id = pd_id AND prato_codigo = pt_cdg;
+RETURN;
+END;
+$$ LANGUAGE plpgsql;

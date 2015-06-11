@@ -10,7 +10,14 @@ INSERT INTO funcionario VALUES
 ('25403227350','Patrick Estrela',3451.34),
 ('76832941366','Raul Seixas',2345.12),
 ('91322332304','Daiana Mendes',3562.12),
-('18314560871','Jacinto Pinto',1252.54);
+('18314560871','Jacinto Pinto',1252.54),
+('04238037006','Vitor Otávio da Silva',3123.24),
+('11479524859','Elias Gabriel Henrique da Silva',2352.00),
+('25529747833','Daniel Pedro Henrique Souza',6723.32),
+('34910098984','Miguel Leonardo Cardoso',1200.00),
+('66612008717','Ricardo Diego Kevin Castro',2345.23),
+('94171242509','Juan Yuri Mendes',3000.13);
+
 
 INSERT INTO cliente VALUES
 ('986090381','20/2/1973','Felipe Neto','Rua Francisco Deogracias Reche 732','Borda do Campo',NULL),
