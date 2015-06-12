@@ -43,10 +43,10 @@ class Atendente(object):
     def __init__(self,**kargs):
         if len(kargs) == 0:
             return
-        if kargs.get('kargs') != None :
-            self.fcpf = kargs['kargs']['fcpf']
-            self.login = kargs['kargs']['login']
-            self.senha = kargs['kargs']['senha']
+        if kargs.get('dict') != None :
+            self.fcpf = kargs['dict']['fcpf']
+            self.login = kargs['dict']['login']
+            self.senha = kargs['dict']['senha']
             return
         self.fcpf = kargs['fcpf']
         self.login = kargs['login']
@@ -59,10 +59,10 @@ class Prato(object):
     def __init__(self,**kargs):
         if len(kargs) == 0:
             return
-        if kargs.get('kargs') != None :
-            self.codigo = kargs['kargs']['codigo']
-            self.nome = kargs['kargs']['nome']
-            self.valor = kargs['kargs']['valor']
+        if kargs.get('dict') != None :
+            self.codigo = kargs['dict']['codigo']
+            self.nome = kargs['dict']['nome']
+            self.valor = kargs['dict']['valor']
             return
         self.codigo = kargs['codigo']
         self.nome = kargs['nome']
@@ -75,9 +75,9 @@ class Motoqueiro(object):
     def __init__(self,**kargs):
         if len(kargs) == 0:
             return
-        if kargs.get('kargs') != None :
-            self.fcpf = kargs['kargs']['fcpf']
-            self.cnh = kargs['kargs']['cnh']
+        if kargs.get('dict') != None :
+            self.fcpf = kargs['dict']['fcpf']
+            self.cnh = kargs['dict']['cnh']
             return
         self.fcpf = kargs['fcpf']
         self.cnh = kargs['cnh']
@@ -89,7 +89,7 @@ class Telefone(object):
     def __init__(self,**kargs):
         if len(kargs) == 0:
             return
-        if kargs.get('kargs') != None :
+        if kargs.get('dict') != None :
             self.fcpf = kargs['dict']['fcpf']
             self.numero = kargs['dict']['numero']
             return
@@ -103,7 +103,7 @@ class Pedido(object):
     def __init__(self,**kargs):
         if len(kargs) == 0:
             return
-        if kargs.get('kargs') != None :
+        if kargs.get('dict') != None :
             self.id = kargs['dict']['id']
             self.horario_pedido = kargs['dict']['horario_pedido']
             self.telefone_cliente = kargs['dict']['telefone_cliente']
@@ -125,7 +125,7 @@ class Item_pedido(object):
     def __init__(self,**kargs):
         if len(kargs) == 0:
             return
-        if kargs.get('kargs') != None :
+        if kargs.get('dict') != None :
             self.pedido_id = kargs['dict']['pedido_id']
             self.prato_codigo = kargs['dict']['prato_codigo']
             self.qtd = kargs['dict']['qtd']
