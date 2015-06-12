@@ -67,7 +67,6 @@ class FuncionarioDAO(object):
             if dicio == None:
                 func = None
             else:
-                pprint(dicio)
                 func = Funcionario(dict=dicio[0])
             cursor.close()
             conn.close()
@@ -145,7 +144,6 @@ class ClienteDAO(object):
             if dicio == None:
                 value = None
             else:
-                pprint(dicio)
                 value = Cliente(dict=dicio[0])
             cursor.close()
             conn.close()
@@ -240,7 +238,6 @@ class AtendenteDAO(object):
             if dicio == None:
                 value = None
             else:
-                pprint(dicio)
                 value = Cliente(dict=dicio[0])
             cursor.close()
             conn.close()
@@ -316,7 +313,6 @@ class PratoDAO(object):
             if dicio == None:
                 value = None
             else:
-                pprint(dicio)
                 value = Prato(dict=dicio[0])
             cursor.close()
             conn.close()
@@ -392,8 +388,278 @@ class MotoqueiroDAO(object):
             if dicio == None:
                 value = None
             else:
-                pprint(dicio)
                 value = Motoqueiro(dict=dicio[0])
+            cursor.close()
+            conn.close()
+        except psycopg2.Error as e:
+            print(e.pgerror)
+            return False,e.pgerror
+        return True,value
+
+############# TELEFONE ############
+class TelefoneDAO(object):
+    def save(self,telefone):
+        conn = ConnectionFactoryPG.getConnection()
+        cursor = conn.cursor()
+        sql = "insert into telefone values (%s,%s)"
+        values = [telefone.fcpf,telefone.numero]
+        try:
+            value = cursor.execute(sql,values)
+            value = Motoqueiro(dict=value)
+            cursor.close()
+            conn.close()
+        except psycopg2.Error as e:
+            print(e.pgerror)
+            return False,e.pgerror
+        return True, value
+
+    def delete(self,numero):
+        conn = ConnectionFactoryPG.getConnection()
+        cursor = conn.cursor()
+        sql = "delete from telefone where numero = %s"
+        values = [numero]
+        try:
+            cursor.execute(sql,values)
+            cursor.close()
+            conn.close()
+        except psycopg2.Error as e:
+            print(e.pgerror)
+            return False, fcpf
+        return True,None
+
+    def map(self,values):
+        l = []
+        for i in values:
+            c = Telefone(dict=i)
+            l.append(c)
+        return l
+
+    def find(self):
+        conn = ConnectionFactoryPG.getConnection()
+        cursor = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
+        sql = "select * from telefone"
+        try:
+            cursor.execute(sql)
+            dicio = cursor.fetchall()
+            if dicio == None:
+                value = None
+            else:
+                value = self.map(dicio)
+            cursor.close()
+            conn.close()
+        except psycopg2.Error as e:
+            print(e.pgerror)
+            return False,e.pgerror
+        return True,value
+
+    def findByCnh(self,cnh):
+        conn = ConnectionFactoryPG.getConnection()
+        cursor = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
+        sql = "select * from telefone where numero like %s"
+        values = ['%' + codigo + '%']
+        try:
+            cursor.execute(sql,values)
+            dicio = cursor.fetchall()
+            if dicio == None:
+                value = None
+            else:
+                value = self.map(dicio[0])
+            cursor.close()
+            conn.close()
+        except psycopg2.Error as e:
+            print(e.pgerror)
+            return False,e.pgerror
+        return True,value
+
+############# PEDIDO ##############
+class PedidoDAO(object):
+    def save(self,pedido):
+        conn = ConnectionFactoryPG.getConnection()
+        cursor = conn.cursor()
+        sql = "insert into pedido \
+              (horario_pedido,telefone_cliente,atendente_login, \
+               entregue_por,valor_total) \
+                values (%s,%s,%s,%s,%s)"
+        values = [pedido.horario_pedido,pedido.telefone_cliente,
+                 pedido.atendente_login,pedido.entregue_por,
+                 pedido.valor_total]
+        try:
+            value = cursor.execute(sql,values).fetchall()
+            value = Pedido(dict=value)
+            cursor.close()
+            conn.close()
+        except psycopg2.Error as e:
+            print(e.pgerror)
+            return False,e.pgerror
+        return True, value
+
+    def delete(self,id):
+        conn = ConnectionFactoryPG.getConnection()
+        cursor = conn.cursor()
+        sql = "delete from pedido where id = %s"
+        values = [id]
+        try:
+            cursor.execute(sql,values)
+            cursor.close()
+            conn.close()
+        except psycopg2.Error as e:
+            print(e.pgerror)
+            return False, fcpf
+        return True,None
+
+    def map(self,values):
+        l = []
+        for i in values:
+            c = Pedido(dict=i)
+            l.append(c)
+        return l
+
+    def find(self):
+        conn = ConnectionFactoryPG.getConnection()
+        cursor = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
+        sql = "select * from pedido"
+        try:
+            cursor.execute(sql)
+            dicio = cursor.fetchall()
+            if dicio == None:
+                value = None
+            else:
+                value = self.map(dicio)
+            cursor.close()
+            conn.close()
+        except psycopg2.Error as e:
+            print(e.pgerror)
+            return False,e.pgerror
+        return True,value
+
+    def findById(self,id_code):
+        conn = ConnectionFactoryPG.getConnection()
+        cursor = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
+        sql = "select * from pedido where id = %s"
+        values = [id_code]
+        try:
+            cursor.execute(sql,values)
+            dicio = cursor.fetchall()
+            if dicio == None:
+                value = None
+            else:
+                value = Pedido(dict=dicio[0])
+            cursor.close()
+            conn.close()
+        except psycopg2.Error as e:
+            print(e.pgerror)
+            return False,e.pgerror
+        return True,value
+
+    def findByTelefoneCliente(self,telefone_cliente):
+        conn = ConnectionFactoryPG.getConnection()
+        cursor = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
+        sql = "select * from pedido where telefone_cliente like %s"
+        values = [telefone_cliente]
+        try:
+            cursor.execute(sql,values)
+            dicio = cursor.fetchall()
+            if dicio == None:
+                value = None
+            else:
+                value = self.map(dicio)
+            cursor.close()
+            conn.close()
+        except psycopg2.Error as e:
+            print(e.pgerror)
+            return False,e.pgerror
+        return True,value
+
+############# ITEM_PEDIDO ##############
+class Item_PedidoDAO(object):
+    def save(self,item_pedido):
+        conn = ConnectionFactoryPG.getConnection()
+        cursor = conn.cursor()
+        sql = "insert into item_pedido \
+                values (%s,%s,%s)"
+        values = [item_pedido.pedido_id,item_pedido.prato_codigo,
+                 item_pedido.qtd]
+        try:
+            value = cursor.execute(sql,values).fetchall()
+            value = Item_pedido(dict=value)
+            cursor.close()
+            conn.close()
+        except psycopg2.Error as e:
+            print(e.pgerror)
+            return False,e.pgerror
+        return True, value
+
+    def delete(self,pedido_id,prato_codigo):
+        conn = ConnectionFactoryPG.getConnection()
+        cursor = conn.cursor()
+        sql = "delete from item_pedido \
+                where pedido_id = %s and prato_codigo = %s"
+        values = [pedido_id,prato_codigo]
+        try:
+            cursor.execute(sql,values)
+            cursor.close()
+            conn.close()
+        except psycopg2.Error as e:
+            print(e.pgerror)
+            return False, fcpf
+        return True,None
+
+    def map(self,values):
+        l = []
+        for i in values:
+            c = Item_pedido(dict=i)
+            l.append(c)
+        return l
+
+    def find(self):
+        conn = ConnectionFactoryPG.getConnection()
+        cursor = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
+        sql = "select * from item_pedido"
+        try:
+            cursor.execute(sql)
+            dicio = cursor.fetchall()
+            if dicio == None:
+                value = None
+            else:
+                value = self.map(dicio)
+            cursor.close()
+            conn.close()
+        except psycopg2.Error as e:
+            print(e.pgerror)
+            return False,e.pgerror
+        return True,value
+
+    def findById(self,id_code):
+        conn = ConnectionFactoryPG.getConnection()
+        cursor = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
+        sql = "select * from item_pedido where id = %s"
+        values = [id_code]
+        try:
+            cursor.execute(sql,values)
+            dicio = cursor.fetchall()
+            if dicio == None:
+                value = None
+            else:
+                value = Pedido(dict=dicio[0])
+            cursor.close()
+            conn.close()
+        except psycopg2.Error as e:
+            print(e.pgerror)
+            return False,e.pgerror
+        return True,value
+
+    def findByTelefoneCliente(self,telefone_cliente):
+        conn = ConnectionFactoryPG.getConnection()
+        cursor = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
+        sql = "select * from pedido where telefone_cliente like %s"
+        values = [telefone_cliente]
+        try:
+            cursor.execute(sql,values)
+            dicio = cursor.fetchall()
+            if dicio == None:
+                value = None
+            else:
+                value = self.map(dicio)
             cursor.close()
             conn.close()
         except psycopg2.Error as e:

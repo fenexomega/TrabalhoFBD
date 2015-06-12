@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 # from dao.ConnectionFactory import *
 from dao.ConnectionFactoryPG import *
 from pprint import pprint
