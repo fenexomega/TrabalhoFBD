@@ -76,6 +76,8 @@ class FuncionarioDAO(object):
         return True,func
 
 
+
+
 ################# CLIENT ######################
 class ClienteDAO(object):
     def save(self,client):
@@ -235,10 +237,10 @@ class AtendenteDAO(object):
         try:
             cursor.execute(sql,values)
             dicio = cursor.fetchall()
-            if dicio == None:
+            if not dicio:
                 value = None
             else:
-                value = Cliente(dict=dicio[0])
+                value = Atendente(dict=dicio[0])
             cursor.close()
             conn.close()
         except psycopg2.Error as e:
