@@ -15,7 +15,7 @@ CREATE TABLE funcionario (
 
 CREATE TABLE cliente (
   telefone varchar(20) PRIMARY KEY,
-  aniversario date NOT NULL,
+  /*aniversario date NOT NULL,*/
   nome varchar(200) NOT NULL,
   rua varchar (200) NOT NULL,
   bairro varchar(100) NOT NULL,
@@ -35,7 +35,7 @@ CREATE TABLE prato (
   );
 
 CREATE TABLE motoqueiro(
-  fcpf char(13) REFERENCES funcionario(cpf) UNIQUE,
+  fcpf char(13) REFERENCES funcionario(cpf) UNIQUE NOT NULL,
   cnh  char(9) PRIMARY KEY
   );
 

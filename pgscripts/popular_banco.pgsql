@@ -20,16 +20,16 @@ INSERT INTO funcionario VALUES
 
 
 INSERT INTO cliente VALUES
-('986090381','20/2/1973','Felipe Neto','Rua Francisco Deogracias Reche 732','Borda do Campo',NULL),
-('988878842','10/11/1958','PC Siqueira','Rua Valdemar Rodrigues Silva 411','Parque Lanel','Próximo à padaria Pão'),
-('993385062','17/7/1974', 'Júlio Pinto','Rua Henrique 431','Parque Lanel',NULL),
-('987954924','4/10/1977', 'Patrícia Calado','Rua A 23','Aldeia do Lago',NULL),
-('993507735','23/11/1989', 'Lima Barreto','Rua Mar Mediterrâneo 1532','Parque Marinha',NULL),
-('997463229','17/9/1960', 'Chico Buarque','Rua Carlos Alberto de Oliveira 2212','Tremembé','AP 14'),
-('998949747','9/11/1962', 'Deodoro da Fonseca','Rua Padre Palmeira 442','Vila Dionisia',NULL),
-('999099446','4/2/1940', 'Luís Inácio Lula','Rua Nicolau Tolentino de Almeida 900','Vila Dionisia',NULL),
-('997735792','1/11/1981', 'Fernando Henrique','Rua Tony (Justinópolis) 123','Aldeia do Lago',NULL),
-('985716932','27/3/1942', 'Cardoso','Rua Teodoro dos Reis 345','Aldeia do Lago',NULL);
+('986090381','Felipe Neto','Rua Francisco Deogracias Reche 732','Borda do Campo',NULL),
+('988878842','PC Siqueira','Rua Valdemar Rodrigues Silva 411','Parque Lanel','Próximo à padaria Pão'),
+('993385062','Júlio Pinto','Rua Henrique 431','Parque Lanel',NULL),
+('987954924','Patrícia Calado','Rua A 23','Aldeia do Lago',NULL),
+('993507735','Lima Barreto','Rua Mar Mediterrâneo 1532','Parque Marinha',NULL),
+('997463229','Chico Buarque','Rua Carlos Alberto de Oliveira 2212','Tremembé','AP 14'),
+('998949747','Deodoro da Fonseca','Rua Padre Palmeira 442','Vila Dionisia',NULL),
+('999099446','Luís Inácio Lula','Rua Nicolau Tolentino de Almeida 900','Vila Dionisia',NULL),
+('997735792','Fernando Henrique','Rua Tony (Justinópolis) 123','Aldeia do Lago',NULL),
+('985716932','Cardoso','Rua Teodoro dos Reis 345','Aldeia do Lago',NULL);
 
 INSERT INTO atendente VALUES
 ('18345820247','ilemos','5c2303c01ef71cf05775f96f3de9059c'),
