@@ -39,8 +39,10 @@ def listarEntregadores():
     x = PrettyTable(['id','Nome','cnh'])
     x.align['Nome'] = 'l'
     x.align['id'] = 'r'
+    n = 0
     for i in motos :
-        x.add_row([i[0],i[1],i[2]])
+        n = n + 1
+        x.add_row([n,i[1],i[2]])
     print(x)
     return motos
 
@@ -61,14 +63,17 @@ def removerItemPedido(pratocod,pedidocod):
         dao = Item_PedidoDAO()
         return dao.delete(pedidocod,pratocod)
 
-def listarCientes():
-    dao = ClienteDAO()
-    clients = dao.find()[1]
+def listarCientes(clients=None):
+    if not clients:
+        dao = ClienteDAO()
+        clients = dao.find()[1]
     x = PrettyTable(['id','Nome','Telefone','Rua','Bairro','Complemento'])
     x.align['Nome'] = x.align['Bairro'] = x.align['Rua'] = x.align['Complemento'] = 'l'
     x.align['id'] = 'r'
+    n = 0
     for i in clients :
-        x.add_row([i.id,i.nome,i.telefone,i.rua,i.bairro,i.complemento])
+        n = n + 1
+        x.add_row([n,i.nome,i.telefone,i.rua,i.bairro,i.complemento])
     print(x)
     return clients
 

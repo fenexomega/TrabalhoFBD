@@ -83,10 +83,17 @@ class ClienteDAO(object):
     def save(self,client):
         conn = ConnectionFactoryPG.getConnection()
         cursor = conn.cursor()
-        sql = "insert into cliente(telefone,nome,rua,bairro,complemento) \
-                values (%s,%s,%s,%s,%s)"
-        values = [client.telefone,client.nome,
-                    client.rua,client.bairro,client.complemento]
+        if not bool(client.id) :
+            sql = "insert into cliente(telefone,nome,rua,bairro,complemento) \
+                    values (%s,%s,%s,%s,%s)"
+            values = [client.telefone,client.nome,
+                        client.rua,client.bairro,client.complemento]
+        else :
+            sql = 'update cliente set telefone = %s, nome = %s, rua = %s, \
+             bairro = %s, complemento = %s where id = %s '
+            values = [client.telefone,client.nome,
+                        client.rua,client.bairro,client.complemento,client.id]
+
         try:
             value = cursor.execute(sql,values)
             cursor.close()
@@ -499,13 +506,13 @@ class PedidoDAO(object):
         cursor = conn.cursor()
         sql = "insert into pedido \
               (telefone_cliente,atendente_login, \
-               entregue_por,valor_total) \
-                values (%s,%s,%s,%s) "
+               entregue_por) \
+                values (%s,%s,%s) "
         values = [pedido.telefone_cliente,
-                 pedido.atendente_login,pedido.entregue_por,
-                 pedido.valor_total]
+                 pedido.atendente_login,pedido.entregue_por]
         try:
-            value = cursor.execute(sql,values).fetchall()
+            cursor.execute(sql,values)
+            value = cursor.fetchall()
             value = Pedido(dict=value)
             cursor.close()
             conn.close()
