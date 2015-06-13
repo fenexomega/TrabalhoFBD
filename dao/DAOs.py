@@ -45,7 +45,7 @@ class FuncionarioDAO(object):
         try:
             cursor.execute(sql)
             dicio = cursor.fetchall()
-            if dicio == None:
+            if not bool(dicio):
                 func = None
             else:
                 func = self.map(dicio)
@@ -64,7 +64,7 @@ class FuncionarioDAO(object):
         try:
             cursor.execute(sql,values)
             dicio = cursor.fetchall()
-            if dicio == None:
+            if not bool(dicio):
                 func = None
             else:
                 func = Funcionario(dict=dicio[0])
@@ -143,7 +143,7 @@ class ClienteDAO(object):
         try:
             cursor.execute(sql,values)
             dicio = cursor.fetchall()
-            if dicio == None:
+            if not bool(dicio) :
                 value = None
             else:
                 value = Cliente(dict=dicio[0])
@@ -162,7 +162,7 @@ class ClienteDAO(object):
         try:
             cursor.execute(sql,values)
             dicio = cursor.fetchall()
-            if dicio == None:
+            if not bool(dicio):
                 value = None
             else:
                 value = self.map(dicio)
@@ -218,7 +218,7 @@ class AtendenteDAO(object):
         try:
             cursor.execute(sql)
             dicio = cursor.fetchall()
-            if dicio == None:
+            if not bool(dicio):
                 value = None
             else:
                 value = self.map(dicio)
@@ -293,7 +293,7 @@ class PratoDAO(object):
         try:
             cursor.execute(sql)
             dicio = cursor.fetchall()
-            if dicio == None:
+            if not bool(dicio):
                 value = None
             else:
                 value = self.map(dicio)
@@ -312,7 +312,7 @@ class PratoDAO(object):
         try:
             cursor.execute(sql,values)
             dicio = cursor.fetchall()
-            if dicio == None:
+            if not bool(dicio):
                 value = None
             else:
                 value = Prato(dict=dicio[0])
@@ -368,10 +368,29 @@ class MotoqueiroDAO(object):
         try:
             cursor.execute(sql)
             dicio = cursor.fetchall()
-            if dicio == None:
+            if not bool(dicio):
                 value = None
             else:
                 value = self.map(dicio)
+            cursor.close()
+            conn.close()
+        except psycopg2.Error as e:
+            print(e.pgerror)
+            return False,e.pgerror
+        return True,value
+
+    def findComNome(self):
+        """ RETORNA DICIONARIO """
+        conn = ConnectionFactoryPG.getConnection()
+        cursor = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
+        sql = "select * from motoqueiro_com_nome"
+        try:
+            cursor.execute(sql)
+            dicio = cursor.fetchall()
+            if not bool(dicio):
+                value = None
+            else:
+                value = dicio
             cursor.close()
             conn.close()
         except psycopg2.Error as e:
@@ -387,7 +406,7 @@ class MotoqueiroDAO(object):
         try:
             cursor.execute(sql,values)
             dicio = cursor.fetchall()
-            if dicio == None:
+            if not bool(dicio):
                 value = None
             else:
                 value = Motoqueiro(dict=dicio[0])
@@ -443,7 +462,7 @@ class TelefoneDAO(object):
         try:
             cursor.execute(sql)
             dicio = cursor.fetchall()
-            if dicio == None:
+            if not bool(dicio):
                 value = None
             else:
                 value = self.map(dicio)
@@ -462,7 +481,7 @@ class TelefoneDAO(object):
         try:
             cursor.execute(sql,values)
             dicio = cursor.fetchall()
-            if dicio == None:
+            if not bool(dicio):
                 value = None
             else:
                 value = self.map(dicio[0])
@@ -523,7 +542,7 @@ class PedidoDAO(object):
         try:
             cursor.execute(sql)
             dicio = cursor.fetchall()
-            if dicio == None:
+            if not bool(dicio):
                 value = None
             else:
                 value = self.map(dicio)
@@ -543,7 +562,7 @@ class PedidoDAO(object):
         try:
             cursor.execute(sql)
             dicio = cursor.fetchall()
-            if dicio == None:
+            if not bool(dicio):
                 value = None
             else:
                 value = dicio
@@ -562,7 +581,7 @@ class PedidoDAO(object):
         try:
             cursor.execute(sql,values)
             dicio = cursor.fetchall()
-            if dicio == None:
+            if not bool(dicio):
                 value = None
             else:
                 value = Pedido(dict=dicio[0])
@@ -581,7 +600,7 @@ class PedidoDAO(object):
         try:
             cursor.execute(sql,values)
             dicio = cursor.fetchall()
-            if dicio == None:
+            if not bool(dicio):
                 value = None
             else:
                 value = self.map(dicio)
@@ -616,7 +635,8 @@ class Item_PedidoDAO(object):
         cursor = conn.cursor()
         sql = "delete from item_pedido \
                 where pedido_id = %s and prato_codigo = %s"
-        values = [pedido_id,prato_codigo]
+        values = [prato_codigo,pedido_id]
+        print(values)
         try:
             cursor.execute(sql,values)
             cursor.close()
@@ -640,7 +660,7 @@ class Item_PedidoDAO(object):
         try:
             cursor.execute(sql)
             dicio = cursor.fetchall()
-            if dicio == None:
+            if not bool(dicio):
                 value = None
             else:
                 value = self.map(dicio)
@@ -651,18 +671,18 @@ class Item_PedidoDAO(object):
             return False,e.pgerror
         return True,value
 
-    def findById(self,id_code):
+    def findByPedido(self,id_pedido):
         conn = ConnectionFactoryPG.getConnection()
         cursor = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
-        sql = "select * from item_pedido where id = %s"
-        values = [id_code]
+        sql = "select * from pegar_items_do_pedido(%s)"
+        values = [id_pedido]
         try:
             cursor.execute(sql,values)
             dicio = cursor.fetchall()
-            if dicio == None:
+            if not bool(dicio):
                 value = None
             else:
-                value = Pedido(dict=dicio[0])
+                value = self.map(dicio)
             cursor.close()
             conn.close()
         except psycopg2.Error as e:
@@ -670,15 +690,15 @@ class Item_PedidoDAO(object):
             return False,e.pgerror
         return True,value
 
-    def findByTelefoneCliente(self,telefone_cliente):
+    def findByPedidoAndPrato(self,id_pedido,codigo_prato):
         conn = ConnectionFactoryPG.getConnection()
         cursor = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
-        sql = "select * from pedido where telefone_cliente like %s"
-        values = [telefone_cliente]
+        sql = "select * from item_pedido p where p.pedido_id and p.prato_codigo = % "
+        values = [id_pedido,codigo_prato]
         try:
             cursor.execute(sql,values)
             dicio = cursor.fetchall()
-            if dicio == None:
+            if not bool(dicio):
                 value = None
             else:
                 value = self.map(dicio)

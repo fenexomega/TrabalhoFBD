@@ -1,6 +1,6 @@
 \c deliverydb
 
-INSERT INTO funcionario VALUES
+INSERT INTO funcionario(cpf,nome,salario) VALUES
 ('00000000000','ADMIN',0000.00),
 ('18345820247','Ítalo Lemos',1500.33),
 ('55711864882','Júlio Vargas',1852.23),
@@ -20,7 +20,7 @@ INSERT INTO funcionario VALUES
 ('94171242509','Juan Yuri Mendes',3000.13);
 
 
-INSERT INTO cliente VALUES
+INSERT INTO cliente(telefone,nome,rua,bairro,complemento) VALUES
 ('986090381','Felipe Neto','Rua Francisco Deogracias Reche 732','Borda do Campo',NULL),
 ('988878842','PC Siqueira','Rua Valdemar Rodrigues Silva 411','Parque Lanel','Próximo à padaria Pão'),
 ('993385062','Júlio Pinto','Rua Henrique 431','Parque Lanel',NULL),

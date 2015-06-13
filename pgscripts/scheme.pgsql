@@ -8,13 +8,15 @@ CREATE DATABASE deliverydb OWNER admin_restaurante;
 \c deliverydb
 
 CREATE TABLE funcionario (
+  id serial,
   cpf char(13) PRIMARY KEY,
   nome varchar(200) NOT NULL,
   salario decimal(10,2) NOT NULL
   );
 
 CREATE TABLE cliente (
-  telefone varchar(20) PRIMARY KEY,
+  id SERIAL PRIMARY KEY,
+  telefone varchar(20) UNIQUE,
   /*aniversario date NOT NULL,*/
   nome varchar(200) NOT NULL,
   rua varchar (200) NOT NULL,

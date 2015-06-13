@@ -31,9 +31,45 @@ def opcoes():
     8-\tListar Funcionario
     9-\tCadastrar Funcionario
     0-\tSair
-    """
+
+    > """
     i = input(text)
     return int(i)
+
+def pergunta():
+    text = """
+    1-\tSim
+    0-\tNão
+
+    > """
+    i = input(text)
+    return int(i)
+
+
+
+def realizarPedido():
+    cliente_tel = input("Digite tel do cliente: ")
+    dao = ClienteDAO()
+    cliente = dao.findByTelefone(cliente_tel)[1]
+    if cliente == None :
+        print('Cliente não existe')
+        print('Deseja Registrar o Cliente? ')
+        opcao = pergunta()
+        if opcao == 1:
+            pass
+        else:
+            return
+    d = {}
+    d['telefone_cliente'] = cliente.telefone
+    d['atendente_login'] = usuario.login
+    d['valor_total'] = 0
+    motos = classes.processos.listarEntregadores()
+    opcao = input("Selecione o entregador (id): ")
+
+    pedido = Pedido()
+
+
+
 
 def subOpcoesAtualizacao():
     text = """
@@ -61,4 +97,15 @@ def main():
                 pass
         elif i == 5 :
             classes.processos.listarPedidos()
+            print("Ver items do pedido?")
+            opcao = pergunta()
+            if opcao == 1:
+                pedido = int(input("Digite id: "))
+                classes.processos.listarItemsDoPedido(pedido)
+                print("Deseja remover algum item?")
+                opcao = pergunta()
+                if opcao == 1:
+                    opcao = int(input("Digite id do prato: "))
+                    classes.processos.removerItemPedido(pedido,opcao)
+
         i = opcoes()

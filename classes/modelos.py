@@ -1,3 +1,5 @@
+import pdb
+
 xstr = lambda s: s or ''
 
 class Funcionario(object):
@@ -20,6 +22,7 @@ class Cliente(object):
         if len(kargs) == 0:
             return
         if kargs.get('dict') != None :
+            self.id          = kargs['dict']['id']
             self.telefone    = kargs['dict']['telefone']
             self.nome        = kargs['dict']['nome']
             self.rua         = kargs['dict']['rua']
@@ -131,6 +134,7 @@ class Item_pedido(object):
             self.pedido_id = kargs['dict']['pedido_id']
             self.prato_codigo = kargs['dict']['prato_codigo']
             self.qtd = kargs['dict']['qtd']
+            return
         self.pedido_id = kargs['pedido_id']
         self.prato_codigo = kargs['prato_codigo']
         self.qtd = kargs['qtd']
