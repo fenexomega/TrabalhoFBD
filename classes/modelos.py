@@ -1,3 +1,5 @@
+xstr = lambda s: s or ''
+
 class Funcionario(object):
     def __init__(self,**kargs):
         if len(kargs) == 0:
@@ -22,13 +24,13 @@ class Cliente(object):
             self.nome        = kargs['dict']['nome']
             self.rua         = kargs['dict']['rua']
             self.bairro      = kargs['dict']['bairro']
-            self.complemento = kargs['dict']['complemento']
+            self.complemento = xstr(kargs['dict']['complemento'])
             return
         self.telefone    = kargs['telefone']
         self.nome        = kargs['nome']
         self.rua         = kargs['rua']
         self.bairro      = kargs['bairro']
-        self.complemento = kargs['complemento']
+        self.complemento = xstr(kargs['complemento'])
     def __str__(self):
         return '[{},{},{},{},{}]'.format(self.telefone,str(self.aniversario.day) + "/" + str(self.aniversario.month) + "/" + str(self.aniversario.year),self.nome,
         self.rua,self.bairro,str(self.complemento))

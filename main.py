@@ -24,7 +24,7 @@ def testCliente():
     c = Cliente(telefone='999999999',nome='Thomas Turbano',
     rua='Rua aracapé 234',bairro='Bairro 3',complemento=None)
     dao.save(c)
-    pprint(dao.findByNome('Th'))
+    pprint(dao.findByNome('Th')[1])
 
 if __name__ == "__main__":
     # testFunc()

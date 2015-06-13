@@ -20,6 +20,27 @@ AFTER INSERT ON item_pedido
 FOR EACH ROW
 EXECUTE PROCEDURE calcular_valor_gasto();
 
+
+CREATE OR REPLACE FUNCTION timestamp_no_pedido() RETURNS TRIGGER
+AS $$
+DECLARE
+  total decimal(10,2);
+BEGIN
+  if NEW.horario_pedido IS NULL
+  THEN
+  update pedido set horario_pedido = now() WHERE id = NEW.id;
+  END if;
+  RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER horario_do_pedido
+AFTER INSERT ON pedido
+FOR EACH ROW
+EXECUTE PROCEDURE timestamp_no_pedido();
+
+
+
 CREATE OR REPLACE FUNCTION pegar_items_do_pedido(pd_id int) RETURNS TABLE (cod int, nome varchar(200), qtd int, valor decimal(10,2))
 AS $$
 BEGIN

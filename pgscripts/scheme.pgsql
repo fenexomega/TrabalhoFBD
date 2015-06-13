@@ -46,7 +46,7 @@ CREATE TABLE telefone (
 
 CREATE TABLE pedido (
   id serial PRIMARY KEY,
-  horario_pedido TIMESTAMP NOT NULL,
+  horario_pedido TIMESTAMP UNIQUE,
   telefone_cliente varchar(20) REFERENCES cliente(telefone) NOT NULL,
   atendente_login varchar(20) REFERENCES atendente(login) NOT NULL,
   entregue_por char(9) REFERENCES motoqueiro(cnh) NOT NULL,

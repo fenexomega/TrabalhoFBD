@@ -1,6 +1,7 @@
 \c deliverydb
 
 INSERT INTO funcionario VALUES
+('00000000000','ADMIN',0000.00),
 ('18345820247','Ítalo Lemos',1500.33),
 ('55711864882','Júlio Vargas',1852.23),
 ('60554357216','João Carlos',2324.23),
@@ -32,6 +33,7 @@ INSERT INTO cliente VALUES
 ('985716932','Cardoso','Rua Teodoro dos Reis 345','Aldeia do Lago',NULL);
 
 INSERT INTO atendente VALUES
+('00000000000','admin','21232f297a57a5a743894a0e4a801fc3'),
 ('18345820247','ilemos','5c2303c01ef71cf05775f96f3de9059c'),
 ('36202349492','asandro','44fc1a472fa17257f786d8ef405e95e9'),
 ('60554357216','jcarlos','ced566012a49f76eb2a0f37074735024'),
@@ -78,10 +80,10 @@ INSERT INTO pedido(horario_pedido,telefone_cliente,atendente_login,entregue_por)
 (TIMESTAMP '2014-09-27 11:00','988878842','jcarlos','911629397'),
 (TIMESTAMP '2015-03-27 11:00','999099446','jvargas','686827067'),
 (TIMESTAMP '2015-04-27 11:01','988878842','jvargas','588474255'),
-(TIMESTAMP '2015-05-27 11:03','997463229','mnascimento','686827067'),
-(TIMESTAMP '2015-05-27 11:03','987954924','ilemos','911629397'),
-(TIMESTAMP '2015-05-27 11:03','997463229','ilemos','299679625'),
-(TIMESTAMP '2015-05-27 11:03','999099446','mnascimento','869174990');
+(TIMESTAMP '2015-05-27 11:03:21','997463229','mnascimento','686827067'),
+(TIMESTAMP '2015-05-27 11:03:52','987954924','ilemos','911629397'),
+(TIMESTAMP '2015-05-27 11:06','997463229','ilemos','299679625'),
+(TIMESTAMP '2015-05-27 11:08','999099446','mnascimento','869174990');
 
 INSERT INTO item_pedido VALUES
 (1,1,1),

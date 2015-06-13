@@ -4,3 +4,5 @@ dbsettings = {
 'password': '',
 'host':'localhost'
 }
+
+Debug = True

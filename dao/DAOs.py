@@ -120,11 +120,11 @@ class ClienteDAO(object):
     def find(self):
         conn = ConnectionFactoryPG.getConnection()
         cursor = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
-        sql = "select * from cliente"
+        sql = "select * from cliente order by nome"
         try:
             cursor.execute(sql)
             dicio = cursor.fetchall()
-            if dicio == None:
+            if not bool(dicio) :
                 value = None
             else:
                 value = self.map(dicio)
@@ -479,10 +479,10 @@ class PedidoDAO(object):
         conn = ConnectionFactoryPG.getConnection()
         cursor = conn.cursor()
         sql = "insert into pedido \
-              (horario_pedido,telefone_cliente,atendente_login, \
+              (telefone_cliente,atendente_login, \
                entregue_por,valor_total) \
-                values (%s,%s,%s,%s,%s)"
-        values = [pedido.horario_pedido,pedido.telefone_cliente,
+                values (%s,%s,%s,%s) "
+        values = [pedido.telefone_cliente,
                  pedido.atendente_login,pedido.entregue_por,
                  pedido.valor_total]
         try:
@@ -527,6 +527,26 @@ class PedidoDAO(object):
                 value = None
             else:
                 value = self.map(dicio)
+            cursor.close()
+            conn.close()
+        except psycopg2.Error as e:
+            print(e.pgerror)
+            return False,e.pgerror
+        return True,value
+
+    def findComNomes(self):
+        """ Essa função retorna um dicionário com os resultados da
+        VIEW 'pedidos_com_nomes' """
+        conn = ConnectionFactoryPG.getConnection()
+        cursor = conn.cursor()
+        sql = "select * from pedidos_com_nomes"
+        try:
+            cursor.execute(sql)
+            dicio = cursor.fetchall()
+            if dicio == None:
+                value = None
+            else:
+                value = dicio
             cursor.close()
             conn.close()
         except psycopg2.Error as e:

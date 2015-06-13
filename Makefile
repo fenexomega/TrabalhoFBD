@@ -7,6 +7,8 @@ all:
 	@psql -U $(USER) $(HAS_PASSWORD) $(NO_DEBUG) < pgscripts/scheme.pgsql
 	@psql -U $(USER) $(HAS_PASSWORD) $(NO_DEBUG) < pgscripts/triggers.pgsql
 	@psql -U $(USER) $(HAS_PASSWORD) $(NO_DEBUG) < pgscripts/popular_banco.pgsql
+	@psql -U $(USER) $(HAS_PASSWORD) $(NO_DEBUG) < pgscripts/views.pgsql
+
 
 
 .PHONY:

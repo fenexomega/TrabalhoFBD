@@ -1,8 +1,9 @@
 #encoding: utf-8
 from classes.modelos import *
 # from dao import ConnectionFactoryPG
-from dao.DAOs import  AtendenteDAO,FuncionarioDAO
+from dao.DAOs import  *
 from hashlib import md5
+from prettytable import PrettyTable
 
 def getMd5(string):
     md = md5(string.encode())
@@ -30,3 +31,28 @@ def login(**kargs):
     e = 'Senha errada\n'
     print(e)
     return False,e
+
+def listarCientes():
+    dao = ClienteDAO()
+    clients = dao.find()[1]
+    x = PrettyTable(['id','Nome','Telefone','Rua','Bairro','Complemento'])
+    x.align['Nome'] = x.align['Bairro'] = x.align['Rua'] = x.align['Complemento'] = 'l'
+    x.align['id'] = 'r'
+    n = 0
+    for i in clients :
+        n = n + 1
+        x.add_row([n,i.nome,i.telefone,i.rua,i.bairro,i.complemento])
+    print(x)
+    return clients
+
+def listarPedidos():
+    dao = PedidoDAO()
+    pedidos = dao.findComNomes()[1]
+    x = PrettyTable(['id','Horário','Cliente','Atendente','Entregador','Total'])
+    x.align['Horário'] = x.align['Cliente'] = x.align['Atendente'] = \
+    x.align['Entregador'] = x.align['Total'] = 'l'
+    x.align['id'] = 'r'
+    for i in pedidos :
+        x.add_row([i[0],i[1],i[2],i[3],i[4],i[5]])
+    print(x)
+    return pedidos
