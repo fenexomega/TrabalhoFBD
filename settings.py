@@ -5,4 +5,6 @@ dbsettings = {
 'host':'localhost'
 }
 
-Debug = True
+Debug = False
+
+Version = '0.5a'

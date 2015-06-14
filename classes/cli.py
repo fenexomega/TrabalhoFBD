@@ -5,6 +5,7 @@ from dao import DAOs
 from settings import *
 from classes.modelos import *
 from dao.DAOs import *
+import hashlib
 
 intinput = lambda s: int(input(s))
 
@@ -21,13 +22,13 @@ usuario = None
 
 def login():
     if not Debug :
-        print("Bem-vindo ao DeliverySys v0.001a")
+        print("Bem-vindo ao DeliverySys v%s" % Version)
         username = input("Digite seu login: ")
         senha = getpass.getpass("Digite sua senha: ")
         result = classes.processos.login(login=username,senha=senha)
         if result[0] :
-            print('Olá, %s\n\n' % result[2].nome)
-            return result[1]
+            print('\n\nOlá, %s\n' % result[2].nome)
+            return result
         return False
     else :
         return classes.processos.login(login='admin',senha='admin')
@@ -42,6 +43,25 @@ def pergunta():
     > """
     i = input(text)
     return int(i)
+
+def perguntaPedidoPrato():
+    text = """
+    1-\tVer Pratos
+    2-\tAdicionar Prato ao Pedido
+    0-\tSair
+    > """
+    return intinput(text)
+
+def perguntaFuncaoFuncionario():
+    text = """Qual a função do funcionário?
+
+    1-\tAtendente
+    2-\tEntregador
+    3-\tOutro
+
+    > """
+    return intinput(text)
+
 
 def cadastrarCliente(cliente = None,**kargs):
     dictionary = {}
@@ -63,10 +83,30 @@ def cadastrarCliente(cliente = None,**kargs):
     dao = ClienteDAO()
     if dao.save(cliente):
         print("Cliente Salvo")
-        return True
+        return True,cliente
     print("Cliente não salvo")
-    return False
+    return False,None
 
+def adicionarPratoAoPedido(pedido_id):
+    d = {}
+    d['pedido_id'] = pedido_id
+    opcao = 1
+    while not opcao == 0:
+        print("ID_PEDIDO = %s" % pedido_id)
+        classes.processos.listarItemsDoPedido(pedido_id)
+        opcao = perguntaPedidoPrato()
+        if opcao == 1:
+            classes.processos.listaPratos()
+        elif opcao == 2:
+            d['prato_codigo'] = intinput("Digite o código do prato: ")
+            d['qtd'] = intinput("Digite a quantidade: ")
+            item_pedido = Item_pedido(dict=d)
+            dao = Item_PedidoDAO()
+            result = dao.save(item_pedido)
+            if result:
+                print("Item salvo com sucesso")
+                continue
+            print("Item não foi salvo")
 
 
 def realizarPedido():
@@ -78,13 +118,15 @@ def realizarPedido():
         print('Deseja Registrar o Cliente? ')
         opcao = pergunta()
         if opcao == 1:
-            if not cadastrarCliente(telefone=cliente_tel):
+            b,cliente = cadastrarCliente(telefone=cliente_tel)
+            if not b:
                 return
         else:
             return
-    opcao = input("Cliente %s, correto? [s/n]" % cliente.nome)
-    if str.upper(opcao[0]) == 'N':
-        return
+    else:
+        opcao = input("Cliente %s, correto? [s/n]" % cliente.nome)
+        if str.upper(opcao[0]) == 'N':
+            return
     d = {}
     d['id'] = None
     d['horario_pedido'] = None
@@ -95,17 +137,97 @@ def realizarPedido():
     opcao = intinput("Selecione o entregador (id): ")
     d['entregue_por'] = motos[opcao - 1]['cnh']
     pedido = Pedido(dict=d)
-    # TODO aqui tá imprimindo um None sem noção
     dao = PedidoDAO()
-    if dao.save(pedido):
+    b,pedido = dao.save(pedido)
+    if b:
          print("Pedido Salvo")
+         print("Deseja cadastrar items no pedido? ")
+         opcao = pergunta()
+         if opcao == 1 :
+             adicionarPratoAoPedido(pedido.id)
          return
     print("Pedido não salvo")
 
+def cadastrarPrato():
+    d = {}
+    d['codigo'] = None
+    d['nome'] = input("Digite o nome: ")
+    d['valor'] = input("Digite o valor: ")
+    p = Prato(dict=d)
+    dao = PratoDAO()
+    if dao.save(p)[0]:
+        print("Prato salvo com sucesso")
+    else:
+        print("Não foi possível salvar o prato")
+
+def cadastrarAtendente(fcpf,login,senha):
+    # TODO se já tiver cadastrado o login, só
+    # mudar a senha
+    dao = AtendenteDAO()
+    senha = hashlib.md5(senha.encode()).hexdigest()
+    d = {'fcpf':fcpf,'login':login,'senha':senha}
+    at = Atendente(dict=d)
+    dao.save(at)
+
+def cadastrarEntregador(fcpf,cnh):
+    dao = MotoqueiroDAO()
+    d = {'fcpf':fcpf}
+    moto = Motoqueiro(d)
+    dao.save(moto)
+
+def cadastrarFuncionario():
+    d = {}
+    d['id'] = None
+    d['nome'] = ''
+    d['salario'] = ''
+    d['cpf'] = input("Digite o cpf: ")
+    dao = FuncionarioDAO()
+    func = dao.findByCpf(d['cpf'])[1]
+    if func != None:
+        print("O CPF %s pertence ao funcionário %s\n    Deseja atualizar? " % (func.cpf,func.nome))
+        opcao = pergunta()
+        d['id'] = func.id
+        if opcao != 1:
+            return
+    else:
+        func = Funcionario(dict=d)
+    d['nome'] = input("Digite nome%s: " % (placeholder(func.nome))) or func.nome
+    d['salario'] = input("Digite salário%s: " % (placeholder(func.salario))) or func.salario
+    func = Funcionario(dict=d)
+    rest = dao.save(func)[0]
+    if rest:
+        print("Funcionário Salvo")
+        opcao = perguntaFuncaoFuncionario()
+        if opcao == 1 :
+            sucesso = False
+            while not sucesso:
+                login = input("Digite o seu login: ")
+                senha1 = getpass.getpass("Digite sua senha: ")
+                senha2 = getpass.getpass("Confirme sua senha: ")
+                if senha1 != senha2:
+                    print("\nErro: senha não confere!\n")
+                    continue
+                sucesso = True
+                cadastrarAtendente(func.cpf,login,senha1)
+        if opcao == 2:
+            # FIXME caso de já existir o motoqueiro
+            # peça pra digitar de novo
+            cnh = input("Digite o CNH: ")
+            cadastrarEntregador(func.cpf,cnh)
+    else:
+        print("Funcionário não salvo")
 
 
 
+def subOpcoesPedido():
+    text = """
+    1-\tAdicionar Prato
+    2-\tRemover Prato
+    3-\tRemover Pedido
+    0-\tSair
 
+    > """
+    return intinput(text)
 
 def subOpcoesAtualizacao():
     text = """
@@ -126,8 +248,8 @@ def opcoes():
     4-\tProcurar Cliente
     5-\tProcurar Pedido
     6-\tCadastrar Prato
-    7-\tProcurar Prato
-    8-\tListar Funcionario
+    7-\tListar Pratos
+    8-\tListar Funcionarios
     9-\tCadastrar Funcionario
     0-\tSair
 
@@ -143,15 +265,19 @@ def main():
 
     i = opcoes()
     while i != 0:
+        # CADSTRAR CLIENTE
         if i == 1 :
             cadastrarCliente()
+        # CADASTRAR PEDIDO
         elif i == 2 :
             realizarPedido()
+        # LISTAR CLIENTES
         elif i == 3 :
             clientes =  classes.processos.listarCientes()
             if subOpcoesAtualizacao() == 1:
                 opcao = intinput("Digite o id: ")
                 cadastrarCliente(clientes[opcao - 1])
+        # PROCURAR CLIENTES
         elif i == 4 :
             dao = ClienteDAO()
             nome = input("Digite nome ou parte: ")
@@ -160,6 +286,7 @@ def main():
             if subOpcoesAtualizacao() == 1:
                 opcao = intinput("Digite o id: ")
                 cadastrarCliente(clientes[opcao - 1])
+        # PROCURAR PEDIDO
         elif i == 5 :
             classes.processos.listarPedidos()
             print("Ver items do pedido?")
@@ -167,10 +294,25 @@ def main():
             if opcao == 1:
                 pedido = int(input("Digite id: "))
                 classes.processos.listarItemsDoPedido(pedido)
-                print("Deseja remover algum item?")
-                opcao = pergunta()
+                print("Deseja fazer alguma operação?")
+                opcao =  subOpcoesPedido()
                 if opcao == 1:
+                    adicionarPratoAoPedido(pedido)
+                elif opcao == 2:
                     opcao = int(input("Digite id do prato: "))
                     classes.processos.removerItemPedido(pedido,opcao)
-
+                elif opcao == 3:
+                    classes.processos.removerPedido(pedido)
+        # CADASTRAR PRATO
+        elif i == 6:
+            cadastrarPrato()
+        # LISTAR PRATOS
+        elif i == 7:
+            classes.processos.listaPratos()
+        # LISTAR FUNCIONARIO
+        elif i == 8:
+            classes.processos.listarFuncionario()
+        # CADASTRAR FUNCIONARIOS
+        elif i == 9:
+            cadastrarFuncionario()
         i = opcoes()

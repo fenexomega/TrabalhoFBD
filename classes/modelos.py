@@ -7,10 +7,12 @@ class Funcionario(object):
         if len(kargs) == 0:
             return
         if kargs.get('dict') != None :
+            self.id      = kargs['dict']['id']
             self.cpf     = kargs['dict']['cpf']
             self.nome    = kargs['dict']['nome']
             self.salario = kargs['dict']['salario']
             return
+        self.id      = kargs['id']
         self.cpf     = kargs['cpf']
         self.nome    = kargs['nome']
         self.salario = kargs['salario']

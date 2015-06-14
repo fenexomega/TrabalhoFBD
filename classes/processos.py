@@ -9,6 +9,9 @@ def getMd5(string):
     md = md5(string.encode())
     return md.hexdigest()
 
+def removerPedido(pedido_id):
+    dao = PedidoDAO()
+    return dao.delete(pedido_id)
 
 
 def login(**kargs):
@@ -56,6 +59,28 @@ def listarItemsDoPedido(id):
             x.add_row([i.prato_codigo,
             dao.findByCodigo(i.prato_codigo)[1].nome,i.qtd,
             i.qtd*dao.findByCodigo(i.prato_codigo)[1].valor])
+    print(x)
+    return ips
+
+def listaPratos():
+    dao = PratoDAO()
+    ips = dao.find()[1]
+    x = PrettyTable(['Código','Nome','Valor'])
+    x.align['Nome'] = 'l'
+    if ips != None:
+        for i in ips :
+            x.add_row([i.codigo,i.nome,i.valor])
+    print(x)
+    return ips
+
+def listarFuncionario():
+    dao = FuncionarioDAO()
+    ips = dao.find()[1]
+    x = PrettyTable(['CPF','Nome','Salário'])
+    x.align['Nome'] = 'l'
+    if ips != None:
+        for i in ips :
+            x.add_row([i.cpf,i.nome,i.salario])
     print(x)
     return ips
 

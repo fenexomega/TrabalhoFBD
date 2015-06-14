@@ -1,15 +1,22 @@
 from dao.ConnectionFactoryPG import *
 from classes.modelos import *
 from pprint import pprint
+import pdb
 
 class FuncionarioDAO(object):
     def save(self,func):
         conn = ConnectionFactoryPG.getConnection()
         cursor = conn.cursor()
-        sql = "insert into funcionario values (%s,%s,%s)"
-        values = [func.cpf,func.nome,func.salario]
+        if func.id == None:
+            sql = "insert into funcionario(cpf,nome,salario) values (%s,%s,%s)"
+            values = [func.cpf,func.nome,func.salario]
+        else:
+            sql = "update funcionario set nome = %s, salario = %s where cpf = %s "
+            values = [func.nome,func.salario,func.cpf]
         try:
-            func = cursor.execute(sql,values)
+            # pdb.set_trace()
+            cursor.execute(sql,values)
+            func = self.findByCpf(func.cpf)
             cursor.close()
             conn.close()
         except psycopg2.Error as e:
@@ -186,7 +193,7 @@ class AtendenteDAO(object):
         conn = ConnectionFactoryPG.getConnection()
         cursor = conn.cursor()
         sql = "insert into atendente values (%s,%s,%s)"
-        senha = md5(atendente.senha.encode()).hexdisgest()
+        senha = atendente.senha
         values = [atendente.fcpf,atendente.login,senha]
         try:
             value = cursor.execute(sql,values)
@@ -512,8 +519,7 @@ class PedidoDAO(object):
                  pedido.atendente_login,pedido.entregue_por]
         try:
             cursor.execute(sql,values)
-            value = cursor.fetchall()
-            value = Pedido(dict=value)
+            value = self.findByTelefoneCliente(pedido.telefone_cliente)[1][-1]
             cursor.close()
             conn.close()
         except psycopg2.Error as e:
@@ -559,6 +565,7 @@ class PedidoDAO(object):
             print(e.pgerror)
             return False,e.pgerror
         return True,value
+
 
     def findComNomes(self):
         """ Essa função retorna um dicionário com os resultados da
@@ -628,8 +635,8 @@ class Item_PedidoDAO(object):
         values = [item_pedido.pedido_id,item_pedido.prato_codigo,
                  item_pedido.qtd]
         try:
-            value = cursor.execute(sql,values).fetchall()
-            value = Item_pedido(dict=value)
+            cursor.execute(sql,values)
+            value = self.findByPedidoAndPrato(item_pedido.pedido_id,item_pedido.prato_codigo)
             cursor.close()
             conn.close()
         except psycopg2.Error as e:
@@ -700,7 +707,7 @@ class Item_PedidoDAO(object):
     def findByPedidoAndPrato(self,id_pedido,codigo_prato):
         conn = ConnectionFactoryPG.getConnection()
         cursor = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
-        sql = "select * from item_pedido p where p.pedido_id and p.prato_codigo = % "
+        sql = "select * from item_pedido p where p.pedido_id = %s and p.prato_codigo = %s "
         values = [id_pedido,codigo_prato]
         try:
             cursor.execute(sql,values)
