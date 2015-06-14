@@ -1,10 +1,10 @@
 dbsettings = {
 'database': 'deliverydb',
-'user': 'postgres',
-'password': '',
+'user': 'user_delivery',
+'password': 'delivery',
 'host':'localhost'
 }
 
-Debug = False
+Debug = True
 
 Version = '0.5a'

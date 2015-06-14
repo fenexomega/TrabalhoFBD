@@ -81,7 +81,7 @@ def cadastrarCliente(cliente = None,**kargs):
     dictionary['complemento']   = input("Digite complemento%s: " % (placeholder(cliente.complemento))) or cliente.complemento
     cliente = Cliente(dict=dictionary)
     dao = ClienteDAO()
-    if dao.save(cliente):
+    if dao.save(cliente)[0]:
         print("Cliente Salvo")
         return True,cliente
     print("Cliente não salvo")

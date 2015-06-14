@@ -13,4 +13,6 @@ all:
 
 .PHONY:
 clear:
-	@psql -U $(USER) $(HAS_PASSWORD) $(NO_DEBUG) -c "DROP DATABASE deliverydb;"
+	@psql -U $(USER) $(HAS_PASSWORD) $(NO_DEBUG) -c "DROP DATABASE deliverydb"
+	@psql -U $(USER) $(HAS_PASSWORD) $(NO_DEBUG) -c "REVOKE SELECT ON ALL TABLES IN SCHEMA public FROM user_delivery"
+	@psql -U $(USER) $(HAS_PASSWORD) $(NO_DEBUG) -c "DROP USER admin_delivery, user_delivery"
