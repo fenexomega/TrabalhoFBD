@@ -1,8 +1,6 @@
 CREATE USER user_delivery WITH ENCRYPTED PASSWORD 'delivery';
 CREATE USER admin_delivery WITH ENCRYPTED PASSWORD 'root';
 
- /*TODO fazer o usuário delivery ter permissão de inserção e seleção*/
-
 CREATE DATABASE deliverydb OWNER admin_delivery;
 /*conectar ao banco*/
 /*GRANT USAGE ON SCHEMA public to user_delivery;*/
@@ -66,13 +64,3 @@ CREATE TABLE item_pedido (
   qtd integer,
   PRIMARY KEY (pedido_id,prato_codigo)
   );
-
-GRANT SELECT ON ALL TABLES IN SCHEMA public TO user_delivery;
-GRANT USAGE ON SCHEMA public to user_delivery;
-GRANT SELECT ON ALL SEQUENCES IN SCHEMA public TO user_delivery;
-GRANT SELECT ON ALL TABLES IN SCHEMA public TO user_delivery;
-
-GRANT ALL ON ALL TABLES IN SCHEMA public TO admin_delivery;
-GRANT USAGE ON SCHEMA public to admin_delivery;
-GRANT ALL ON ALL SEQUENCES IN SCHEMA public TO admin_delivery;
-GRANT ALL ON ALL TABLES IN SCHEMA public TO admin_delivery;
