@@ -1,10 +1,10 @@
 dbsettings = {
 'database': 'deliverydb',
-'user': 'user_delivery',
-'password': 'delivery',
+'user': 'admin_delivery',
+'password': 'rpot',
 'host':'localhost'
 }
 
-Debug = True
+Debug = False
 
 Version = '0.5a'
