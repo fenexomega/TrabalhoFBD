@@ -171,8 +171,8 @@ def cadastrarAtendente(fcpf,login,senha):
 
 def cadastrarEntregador(fcpf,cnh):
     dao = MotoqueiroDAO()
-    d = {'fcpf':fcpf}
-    moto = Motoqueiro(d)
+    d = {'fcpf':fcpf,'cnh':cnh}
+    moto = Motoqueiro(dict=d)
     dao.save(moto)
 
 def cadastrarFuncionario():

@@ -346,7 +346,7 @@ class MotoqueiroDAO(object):
         values = [motoqueiro.fcpf,motoqueiro.cnh]
         try:
             value = cursor.execute(sql,values)
-            value = Motoqueiro(dict=value)
+            value = self.findByCnh(motoqueiro.cnh)
             cursor.close()
             conn.close()
         except psycopg2.Error as e:
@@ -530,15 +530,16 @@ class PedidoDAO(object):
     def delete(self,id):
         conn = ConnectionFactoryPG.getConnection()
         cursor = conn.cursor()
-        sql = "delete from pedido where id = %s"
+        sql = ["delete from item_pedido where pedido_id = %s","delete from pedido where id = %s"]
         values = [id]
         try:
-            cursor.execute(sql,values)
+            cursor.execute(sql[0],values)
+            cursor.execute(sql[1],values)
             cursor.close()
             conn.close()
         except psycopg2.Error as e:
             print(e.pgerror)
-            return False, fcpf
+            return False, e
         return True,None
 
     def map(self,values):

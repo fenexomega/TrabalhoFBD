@@ -5,6 +5,7 @@ from pprint import pprint
 from classes.modelos import *
 from dao.DAOs import *
 from classes  import cli
+import os
 
 def main():
     cursor = ConnectionFactoryPG.getConnection()
@@ -27,6 +28,7 @@ def testCliente():
     pprint(dao.findByNome('Th')[1])
 
 if __name__ == "__main__":
+    os.system("clear")
     # testFunc()
     # testCliente()
     cli.main()

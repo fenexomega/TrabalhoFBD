@@ -1,7 +1,7 @@
 dbsettings = {
 'database': 'deliverydb',
 'user': 'admin_delivery',
-'password': 'rpot',
+'password': 'root',
 'host':'localhost'
 }
 

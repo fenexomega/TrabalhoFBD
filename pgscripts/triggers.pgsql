@@ -3,6 +3,7 @@
 
 \c deliverydb
 
+/* ADICIONA VALOR TOTAL AO PEDIDO */
 CREATE OR REPLACE FUNCTION calcular_valor_gasto_adic() RETURNS TRIGGER
 AS $$
 DECLARE
@@ -20,6 +21,7 @@ AFTER INSERT ON item_pedido
 FOR EACH ROW
 EXECUTE PROCEDURE calcular_valor_gasto_adic();
 
+/* RETIRA VALOR TOTAL */
 CREATE OR REPLACE FUNCTION calcular_valor_gasto_sub() RETURNS TRIGGER
 AS $$
 DECLARE
@@ -57,6 +59,7 @@ AFTER INSERT ON pedido
 FOR EACH ROW
 EXECUTE PROCEDURE timestamp_no_pedido();
 
+/* FUNÇÕES */
 
 /* ITEMS DO PEDIDO */
 CREATE OR REPLACE FUNCTION pegar_items_do_pedido(pd_id int) RETURNS TABLE (pedido_id int, prato_codigo int, qtd int)
