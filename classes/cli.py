@@ -161,7 +161,7 @@ def cadastrarPrato():
         print("Não foi possível salvar o prato")
 
 def cadastrarAtendente(fcpf,login,senha):
-    # TODO se já tiver cadastrado o login, só
+    # FIXME se já tiver cadastrado o login, só
     # mudar a senha
     dao = AtendenteDAO()
     senha = hashlib.md5(senha.encode()).hexdigest()
@@ -216,6 +216,8 @@ def cadastrarFuncionario():
             cadastrarEntregador(func.cpf,cnh)
     else:
         print("Funcionário não salvo")
+        # TODO CADASRAR E VER O TELEFONE
+
 
 
 

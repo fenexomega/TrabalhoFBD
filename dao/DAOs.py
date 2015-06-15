@@ -270,8 +270,8 @@ class PratoDAO(object):
         sql = "insert into prato(nome,valor) values (%s,%s)"
         values = [prato.nome,prato.valor]
         try:
-            value = cursor.execute(sql,values).fetchall()
-            value = Prato(dict=value[0])
+            value = cursor.execute(sql,values)
+            value = self.find()[1][-1]
             cursor.close()
             conn.close()
         except psycopg2.Error as e:
